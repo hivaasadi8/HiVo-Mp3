@@ -4,7 +4,7 @@
       "username": "",
       "first_name": ".",
       "last_seen": 1789393207,
-      "conversions": 4,
+      "conversions": 5,
       "joined_at": 1789393190
     },
     "7862983298": {
@@ -16,7 +16,7 @@
     }
   },
   "stats": {
-    "total_conversions": 5,
+    "total_conversions": 6,
     "new_users_today": 1
   },
   "meta": {
@@ -25,7 +25,8 @@
   },
   "daily": {
     "2026-09-14": {
-      "new_users_today": 1
+      "new_users_today": 1,
+      "total_conversions": 1
     }
   }
 }
