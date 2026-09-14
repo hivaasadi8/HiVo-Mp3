@@ -12,12 +12,12 @@
       "username": "HKuRmAnJ",
       "first_name": "ٓ",
       "last_seen": 1789422152,
-      "conversions": 11,
+      "conversions": 12,
       "joined_at": 1789400129
     }
   },
   "stats": {
-    "total_conversions": 17,
+    "total_conversions": 18,
     "new_users_today": 2,
     "conversions_mp3": 11,
     "conversions_voice": 1
@@ -29,7 +29,7 @@
   "daily": {
     "2026-09-14": {
       "new_users_today": 2,
-      "total_conversions": 12,
+      "total_conversions": 13,
       "conversions_mp3": 11,
       "conversions_voice": 1
     }
