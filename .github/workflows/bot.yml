@@ -1,0 +1,41 @@
+name: HiVo-MP3 Bot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */5 * * *"   # هر ۵ ساعت ریاستارت
+
+concurrency:
+  group: hivo-mp3-bot
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          BOT_TOKEN:     ${{ secrets.BOT_TOKEN }}
+          GH_TOKEN:      ${{ secrets.GH_TOKEN }}
+          GH_REPO:       ${{ github.repository }}
+          GH_PATH:       data/db.json
+          GH_BRANCH:     main
+          ADMINS:        ${{ secrets.ADMINS }}
+          GATE_CHANNEL:  ${{ secrets.GATE_CHANNEL }}
+          FREE_MAX_MB:   "20"
+          PREMIUM_MAX_MB: "50"
+        run: python main.py
