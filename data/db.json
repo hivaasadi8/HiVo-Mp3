@@ -18,7 +18,8 @@
   "stats": {
     "total_conversions": 7,
     "new_users_today": 1,
-    "conversions_mp3": 1
+    "conversions_mp3": 1,
+    "conversions_voice": 1
   },
   "meta": {
     "version": 2,
@@ -28,7 +29,8 @@
     "2026-09-14": {
       "new_users_today": 1,
       "total_conversions": 2,
-      "conversions_mp3": 1
+      "conversions_mp3": 1,
+      "conversions_voice": 1
     }
   }
 }
