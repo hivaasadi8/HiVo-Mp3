@@ -1,8 +1,8 @@
-import json, os, time, threading, base64, requests
+import json, time, threading, base64, requests
 
 
 class GitHubJSONBackend:
-    """ذخیره داده روی یه فایل JSON تو گیتهاب. با RLock و retry."""
+    """ذخیره داده روی یه فایل JSON تو گیت‌هاب. با RLock و retry."""
 
     def __init__(self, token, repo, path, branch="main"):
         self.token = token
@@ -68,7 +68,7 @@ class GitHubJSONBackend:
                     if r.status_code in (200, 201):
                         self._sha = r.json()["content"]["sha"]
                         return True
-                    if r.status_code == 409:  # conflict
+                    if r.status_code == 409:
                         self.load(force=True)
                         continue
                     r.raise_for_status()
