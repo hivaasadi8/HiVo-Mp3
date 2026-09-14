@@ -17,7 +17,8 @@
   },
   "stats": {
     "total_conversions": 6,
-    "new_users_today": 1
+    "new_users_today": 1,
+    "conversions_mp3": 1
   },
   "meta": {
     "version": 2,
@@ -26,7 +27,8 @@
   "daily": {
     "2026-09-14": {
       "new_users_today": 1,
-      "total_conversions": 1
+      "total_conversions": 1,
+      "conversions_mp3": 1
     }
   }
 }
