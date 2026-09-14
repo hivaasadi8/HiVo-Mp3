@@ -3,7 +3,7 @@ name: HiVo-MP3 Bot
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */5 * * *"   # هر ۵ ساعت ریاستارت
+    - cron: "0 */5 * * *"
 
 concurrency:
   group: hivo-mp3-bot
@@ -29,13 +29,13 @@ jobs:
 
       - name: Run bot
         env:
-          BOT_TOKEN:     ${{ secrets.BOT_TOKEN }}
-          GH_TOKEN:      ${{ secrets.GH_TOKEN }}
-          GH_REPO:       ${{ github.repository }}
-          GH_PATH:       data/db.json
-          GH_BRANCH:     main
-          ADMINS:        ${{ secrets.ADMINS }}
-          GATE_CHANNEL:  ${{ secrets.GATE_CHANNEL }}
-          FREE_MAX_MB:   "20"
+          BOT_TOKEN:      ${{ secrets.BOT_TOKEN }}
+          GH_TOKEN:       ${{ secrets.GH_TOKEN }}
+          GH_REPO:        ${{ github.repository }}
+          GH_PATH:        data/db.json
+          GH_BRANCH:      main
+          ADMINS:         ${{ secrets.ADMINS }}
+          GATE_CHANNEL:   ${{ secrets.GATE_CHANNEL }}
+          FREE_MAX_MB:    "18"
           PREMIUM_MAX_MB: "50"
         run: python main.py
