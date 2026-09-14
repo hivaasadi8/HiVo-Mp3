@@ -1,33 +1,128 @@
-name: HiVo-MP3 Bot
+# ═══════════════════════════════════════════════════════════
+#  🎵  HiVo-MP3 Bot — Auto Deploy Workflow
+#  Runs on GitHub Actions · Auto-restart · Self-healing
+# ═══════════════════════════════════════════════════════════
 
+name: 🎵 HiVo-MP3 Bot
+
+# ─────────────── Triggers ───────────────
 on:
+  # اجرای دستی با حالت دلخواه
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "حالت اجرا"
+        required: false
+        default: "normal"
+        type: choice
+        options: [normal, debug]
+
+  # راه‌اندازی خودکار — هر ۵ ساعت
   schedule:
     - cron: "0 */5 * * *"
 
+# ─────────────── Concurrency ───────────────
+# از اجرای همزمان دو نمونه جلوگیری می‌کنه
 concurrency:
   group: hivo-mp3-bot
   cancel-in-progress: true
 
+# ─────────────── Permissions ───────────────
+permissions:
+  contents: read
+
+# ─────────────── Global env ───────────────
+env:
+  PYTHON_VERSION: "3.11"
+  PYTHONUNBUFFERED: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+# ═══════════════════════════════════════════════════════════
 jobs:
+
+  # ─────────────────────────────────────────────
+  #  🔍  Job 1 — Preflight
+  #  چک کردن Secret ها قبل از هدر دادن منابع
+  # ─────────────────────────────────────────────
+  preflight:
+    name: 🔍 Preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - name: ✅ Verify secrets
+        id: check
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_TOKEN:  ${{ secrets.GH_TOKEN }}
+          ADMINS:    ${{ secrets.ADMINS }}
+        run: |
+          missing=""
+          [ -z "$BOT_TOKEN" ] && missing="$missing BOT_TOKEN"
+          [ -z "$GH_TOKEN" ]  && missing="$missing GH_TOKEN"
+          [ -z "$ADMINS" ]    && missing="$missing ADMINS"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing secrets:$missing"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+          echo "✅ All required secrets are set"
+
+  # ─────────────────────────────────────────────
+  #  🎵  Job 2 — Run Bot
+  #  اجرای ربات با auto-restart و self-healing
+  # ─────────────────────────────────────────────
   run:
+    name: 🎵 Run Bot
+    needs: preflight
+    if: needs.preflight.outputs.ready == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 350
+
     steps:
-      - uses: actions/checkout@v4
+      # ── 1. Checkout ──
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      # ── 2. Python setup with pip cache ──
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
+          cache-dependency-path: requirements.txt
 
-      - name: Install FFmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      # ── 3. FFmpeg ──
+      - name: 🎬 Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffmpeg  -version | head -n1
+          ffprobe -version | head -n1
 
-      - name: Install Python deps
-        run: pip install -r requirements.txt
+      # ── 4. Python deps ──
+      - name: 📦 Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Run bot
+      # ── 5. Prepare data dir ──
+      - name: 🗄 Prepare data dir
+        run: |
+          mkdir -p data
+          if [ ! -f data/db.json ]; then echo '{}' > data/db.json; fi
+
+      # ── 6. Smoke test ──
+      - name: 🧪 Smoke test
+        run: |
+          python -c "import telegram; print('telegram', telegram.__version__)"
+          python -c "from store     import Store;             print('store OK')"
+          python -c "from converter import probe, convert;    print('converter OK')"
+
+      # ── 7. Run bot with self-healing loop ──
+      - name: 🚀 Run bot
         env:
           BOT_TOKEN:      ${{ secrets.BOT_TOKEN }}
           GH_TOKEN:       ${{ secrets.GH_TOKEN }}
@@ -36,6 +131,55 @@ jobs:
           GH_BRANCH:      main
           ADMINS:         ${{ secrets.ADMINS }}
           GATE_CHANNEL:   ${{ secrets.GATE_CHANNEL }}
-          FREE_MAX_MB:    "18"
-          PREMIUM_MAX_MB: "50"
-        run: python main.py
+          FREE_MAX_MB:    "10"
+          PREMIUM_MAX_MB: "19"
+        run: |
+          set -u
+          # حداکثر زمان اجرا: ۵ ساعت و ۳۰ دقیقه
+          DEADLINE=$(( $(date +%s) + 330*60 ))
+          RESTARTS=0
+          MAX_RESTARTS=10
+
+          while [ "$(date +%s)" -lt "$DEADLINE" ]; do
+            echo "▶️  $(date -u +%H:%M:%S)  start (restart #${RESTARTS})"
+            python main.py 2>&1 | tee -a bot.log || true
+            RESTARTS=$((RESTARTS + 1))
+
+            if [ "$RESTARTS" -ge "$MAX_RESTARTS" ]; then
+              echo "::error::too many restarts — giving up"
+              exit 1
+            fi
+
+            echo "⏹  $(date -u +%H:%M:%S)  stopped — restart in 10s"
+            sleep 10
+          done
+          echo "⏰ Time budget reached — exiting cleanly for scheduled restart"
+
+      # ── 8. Upload logs (always) ──
+      - name: 📤 Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bot-logs-${{ github.run_id }}
+          path: |
+            bot.log
+            data/db.json
+          retention-days: 3
+          if-no-files-found: ignore
+
+      # ── 9. Notify admin on failure ──
+      - name: 🚨 Notify on failure
+        if: failure()
+        continue-on-error: true
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          ADMINS:    ${{ secrets.ADMINS }}
+          RUN_URL:   ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          ADMIN=$(echo "$ADMINS" | cut -d',' -f1 | tr -d ' ')
+          [ -z "$ADMIN" ] && exit 0
+          TEXT="🚨 HiVo-MP3 workflow failed%0A🔗 ${RUN_URL}"
+          curl -s "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${ADMIN}" \
+            -d "parse_mode=HTML" \
+            -d "text=${TEXT}" > /dev/null || true
