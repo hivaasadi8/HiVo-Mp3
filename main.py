@@ -19,8 +19,11 @@ GH_PATH         = os.getenv("GH_PATH", "data/db.json")
 GH_BRANCH       = os.getenv("GH_BRANCH", "main")
 GATE_CHANNEL    = os.getenv("GATE_CHANNEL", "")
 ADMINS          = set(int(x) for x in os.getenv("ADMINS", "").split(",") if x.strip())
-FREE_MAX_MB     = int(os.getenv("FREE_MAX_MB", "18"))
-PREMIUM_MAX_MB  = int(os.getenv("PREMIUM_MAX_MB", "50"))
+
+# ⚠️ سقف تلگرام Bot API برای دانلود = 20MB (غیرقابل تغییر بدون Local Server)
+TG_HARD_LIMIT_MB = 19
+FREE_MAX_MB      = int(os.getenv("FREE_MAX_MB", "10"))
+PREMIUM_MAX_MB   = int(os.getenv("PREMIUM_MAX_MB", str(TG_HARD_LIMIT_MB)))
 
 logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(message)s",
@@ -152,13 +155,36 @@ async def on_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     max_mb = PREMIUM_MAX_MB if is_prem else FREE_MAX_MB
     size_mb = (media.file_size or 0) / (1024 * 1024)
 
+    # ⛔ چک سقف سخت تلگرام
+    if size_mb > TG_HARD_LIMIT_MB:
+        await msg.reply_text(
+            "╭──────────────────────╮\n"
+            "│  ⚠️  <b>حجم فایل زیاده</b>\n"
+            "╰──────────────────────╯\n\n"
+            f"📦 حجم فایل شما: <b>{size_mb:.1f} MB</b>\n"
+            f"🚧 سقف تلگرام: <b>{TG_HARD_LIMIT_MB} MB</b>\n\n"
+            "❗️ <b>دلیل:</b> تلگرام به ربات‌ها اجازه دانلود فایل\n"
+            "بیشتر از ۲۰ مگابایت رو نمیده.\n\n"
+            "💡 <b>راه‌حل:</b>\n"
+            "• ویدیو رو با کیفیت پایین‌تر دانلود کن\n"
+            "• یا با یه نرم‌افزار حجمش رو کم کن\n"
+            "• یا فایل رو تیکه‌تیکه بفرست",
+            parse_mode=ParseMode.HTML,
+        )
+        return
+
+    # چک سقف داخلی برنامه
     if size_mb > max_mb:
         await msg.reply_text(
-            "⚠️ <b>حجم فایل زیاده!</b>\n\n"
+            "╭──────────────────────╮\n"
+            "│  🔒  <b>سقف پلن شما</b>\n"
+            "╰──────────────────────╯\n\n"
             f"📦 حجم فایل: <b>{size_mb:.1f} MB</b>\n"
-            f"🎯 حد مجاز: <b>{max_mb} MB</b>\n\n"
-            + ("💎 با پریمیوم حجم بیشتری میتونی بفرستی."
-               if not is_prem else "❌ فایل خیلی بزرگه."),
+            f"🎯 سقف پلن شما: <b>{max_mb} MB</b>\n\n"
+            "💎 <b>با ارتقا به پریمیوم:</b>\n"
+            f"• سقف تا <b>{PREMIUM_MAX_MB} MB</b>\n"
+            "• کیفیت ۳۲۰kbps\n"
+            "• اولویت در پردازش",
             parse_mode=ParseMode.HTML,
         )
         return
@@ -197,7 +223,6 @@ async def do_convert(update: Update, context: ContextTypes.DEFAULT_TYPE, data: s
         await q.answer("💎 این کیفیت ویژه اعضای پریمیومه!", show_alert=True)
         return
 
-    # پیام "در حال پردازش" گرافیکی
     bar = "▓▓▓▓▓░░░░░░░░░░░░░░░"
     await q.edit_message_text(
         "╭──────────────────────╮\n"
@@ -213,7 +238,23 @@ async def do_convert(update: Update, context: ContextTypes.DEFAULT_TYPE, data: s
 
     src = audio = thumb = None
     try:
-        tg_file = await context.bot.get_file(pending["file_id"])
+        # گرفتن فایل با مدیریت خطای سقف تلگرام
+        try:
+            tg_file = await context.bot.get_file(pending["file_id"])
+        except Exception as e:
+            if "too big" in str(e).lower():
+                await q.edit_message_text(
+                    "╭──────────────────────╮\n"
+                    "│  ❌  <b>فایل خیلی بزرگه</b>\n"
+                    "╰──────────────────────╯\n\n"
+                    "تلگرام به ربات‌ها اجازه دانلود فایل‌های\n"
+                    "بیشتر از ۲۰ مگابایت رو نمیده.\n\n"
+                    "💡 لطفاً فایل کوچک‌تری بفرست.",
+                    parse_mode=ParseMode.HTML,
+                )
+                return
+            raise
+
         src = os.path.join(tempfile.gettempdir(),
                            f"src_{user.id}_{int(time.time())}")
         await tg_file.download_to_drive(src)
@@ -247,7 +288,6 @@ async def do_convert(update: Update, context: ContextTypes.DEFAULT_TYPE, data: s
         store.inc_user_conversions(user.id)
         store.inc_stat("total_conversions")
 
-        # پیام موفقیت گرافیکی
         await context.bot.send_message(
             chat_id=q.message.chat_id,
             text=(
@@ -339,10 +379,11 @@ async def handle_admin_cb(update: Update, context: ContextTypes.DEFAULT_TYPE, da
     if action == "settings":
         await q.edit_message_text(
             "⚙️ <b>تنظیمات ربات</b>\n\n"
-            f"🔒 قفل کانال      : <code>{GATE_CHANNEL or 'خاموش'}</code>\n"
-            f"📦 حد رایگان      : <b>{FREE_MAX_MB} MB</b>\n"
-            f"💎 حد پریمیوم    : <b>{PREMIUM_MAX_MB} MB</b>\n"
-            f"👮 ادمین‌ها        : <b>{len(ADMINS)}</b>",
+            f"🔒 قفل کانال       : <code>{GATE_CHANNEL or 'خاموش'}</code>\n"
+            f"📦 سقف رایگان     : <b>{FREE_MAX_MB} MB</b>\n"
+            f"💎 سقف پریمیوم   : <b>{PREMIUM_MAX_MB} MB</b>\n"
+            f"🚧 سقف تلگرام     : <b>{TG_HARD_LIMIT_MB} MB</b>\n"
+            f"👮 ادمین‌ها         : <b>{len(ADMINS)}</b>",
             parse_mode=ParseMode.HTML, reply_markup=back_kb("admin"),
         )
         return
@@ -391,7 +432,10 @@ async def on_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "• ویس تلگرام (OGG)\n\n"
             "📦 <b>حد مجاز حجم:</b>\n"
             f"• رایگان: {FREE_MAX_MB} MB\n"
-            f"• پریمیوم: {PREMIUM_MAX_MB} MB\n\n"
+            f"• پریمیوم: {PREMIUM_MAX_MB} MB\n"
+            f"• سقف تلگرام: {TG_HARD_LIMIT_MB} MB\n\n"
+            "⚠️ <b>توجه:</b> تلگرام به ربات‌ها اجازه دانلود\n"
+            "فایل‌های بالای ۲۰ مگابایت رو نمیده.\n\n"
             "⭐️ <b>پریمیوم چه مزایایی داره؟</b>\n"
             "• کیفیت 320kbps\n"
             "• حجم بیشتر\n"
@@ -405,9 +449,9 @@ async def on_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "╭──────────────────────╮\n"
             "│  ⭐️  <b>اشتراک ویژه HiVo</b>\n"
             "╰──────────────────────╯\n\n"
-            "✅ حجم تا <b>50MB</b>\n"
-            "✅ کیفیت <b>320kbps</b>\n"
-            "✅ اولویت در پردازش\n"
+            f"✅ حجم تا <b>{PREMIUM_MAX_MB} MB</b> (سقف تلگرام)\n"
+            "✅ کیفیت <b>320kbps</b> (استودیویی)\n"
+            "✅ اولویت در صف پردازش\n"
             "✅ پشتیبانی اختصاصی\n\n"
             "💬 برای خرید به ادمین پیام بده.",
             parse_mode=ParseMode.HTML, reply_markup=back_kb(),
