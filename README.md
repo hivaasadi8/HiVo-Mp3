@@ -1,36 +1,22 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7b2ff7,50:00d4ff,100:7b2ff7&height=220&section=header&text=HiVo-MP3&fontSize=80&fontColor=ffffff&animation=twinkling&fontAlignY=32&desc=Convert%20Video%20to%20Music%20in%20Seconds&descAlignY=58&descSize=18&descAlign=50" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7b2ff7,50:00d4ff,100:7b2ff7&height=240&section=header&text=HiVo-MP3&fontSize=90&fontColor=ffffff&animation=twinkling&fontAlignY=35&desc=🎵%20Video%20to%20Music%20Bot%20🎵&descAlignY=60&descSize=22" width="100%" />
 
 <br>
 
 <a href="https://t.me/HiVoMP3Bot">
-  <img src="https://img.shields.io/badge/Telegram-Bot-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&labelColor=0d1117" alt="Telegram Bot"/>
+  <img src="https://img.shields.io/badge/🤖_Telegram-Bot-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&labelColor=0d1117" />
 </a>
 <a href="https://github.com/hivaasadi8/HiVo-Mp3">
-  <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" alt="GitHub Repo"/>
+  <img src="https://img.shields.io/badge/📦_GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" />
 </a>
-<img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0d1117"/>
-<img src="https://img.shields.io/badge/FFmpeg-Powered-007808?style=for-the-badge&logo=ffmpeg&logoColor=white&labelColor=0d1117"/>
-<img src="https://img.shields.io/badge/GitHub%20Actions-Auto%20Deploy-2088FF?style=for-the-badge&logo=github-actions&logoColor=white&labelColor=0d1117"/>
-<img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=0d1117"/>
+<img src="https://img.shields.io/badge/🐍_Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0d1117" />
+<img src="https://img.shields.io/badge/🎬_FFmpeg-Powered-007808?style=for-the-badge&logo=ffmpeg&logoColor=white&labelColor=0d1117" />
+<img src="https://img.shields.io/badge/⚡_Actions-Auto_Deploy-2088FF?style=for-the-badge&logo=github-actions&logoColor=white&labelColor=0d1117" />
 
 <br><br>
 
-<h3>🎵 ربات تلگرامی تبدیل ویدیو به موزیک</h3>
-<p><i>سریع • دقیق • باکیفیت • بدون افت صدا</i></p>
-
-<br>
-
-<a href="#-ویژگیها">
-  <img src="https://img.shields.io/badge/✨_ویژگیها-انجام_شده-7b2ff7?style=flat-square&labelColor=0d1117"/>
-</a>
-<a href="#-راهاندازی">
-  <img src="https://img.shields.io/badge/🚀_راه‌اندازی-آموزش-00d4ff?style=flat-square&labelColor=0d1117"/>
-</a>
-<a href="#-ساختار-پروژه">
-  <img src="https://img.shields.io/badge/📁_ساختار-معماری-00d47f?style=flat-square&labelColor=0d1117"/>
-</a>
+<h1>✨ ویژگی‌های ربات ✨</h1>
 
 </div>
 
@@ -38,95 +24,138 @@
 
 ---
 
-## 🎯 درباره پروژه
+<div align="center">
 
-**HiVo-MP3** یک ربات تلگرامی حرفه‌ای برای تبدیل ویدیو به موزیک است.
-با پشتیبانی از چندین فرمت خروجی، مدیریت کاربران و پریمیوم، پنل ادمین کامل، و اجرای کاملاً خودکار روی GitHub Actions.
+## 🎧 &nbsp; موتور تبدیل صدا &nbsp; 🎧
 
-طراحی‌شده با **معماری سه‌لایه** (main / store / converter) — قابل توسعه، مقاوم در برابر خطا و آماده برای مقیاس.
+</div>
 
 <br>
 
----
-
-## ✨ ویژگی‌ها
-
-<table>
+<table align="center" width="100%">
 <tr>
-<td width="50%" valign="top">
-
-### 🎧 موتور تبدیل قدرتمند
-
-- 🎵 **MP3** — 128 / 192 / 320 kbps + **VBR V0**
-- 🎼 **M4A (AAC)** — 128 / 192 / 256 kbps
-- 🎤 **ویس تلگرام** — Opus 48k
-- 🎼 **FLAC** — بدون افت کیفیت
-- 🔊 **نرمال‌سازی صدا** با استاندارد EBU R128
-- ✂️ **حذف خودکار سکوت** ابتدا/انتها
-- 🖼 **استخراج کاور** هوشمند (چند سطح fallback)
-- 📝 **متادیتای خودکار** (title / artist / album)
-
-### ⚡️ زیرساخت مقیاس‌پذیر
-
-- 🚀 **Semaphore** برای تبدیل همزمان
-- ⏱ **Rate Limiting** — ۵/۵د برای رایگان، ۳۰/۵د برای پریمیوم
-- 🛡 **Graceful Shutdown** روی SIGTERM
-- 🔄 **Auto-restart** با ۱۰ تلاش
-- 📦 **ذخیره‌سازی اتمیک** روی GitHub JSON
-- 🧪 **Smoke Test** قبل از اجرا
-
+<td width="25%" align="center">
+<br>
+<img src="https://img.shields.io/badge/🎵-MP3-ff6b6b?style=for-the-badge&labelColor=0d1117" />
+<br><br>
+<b>۴ کیفیت</b>
+<br>
+<sub>128 · 192 · 320 · V0</sub>
+<br><br>
 </td>
-<td width="50%" valign="top">
-
-### 🎨 رابط کاربری تمیز
-
-- 💎 دکمه‌های شیشه‌ای مینیمال
-- 📊 نوار پیشرفت زنده (۳۰٪ → ۸۰٪ → ۱۰۰٪)
-- 🗂 کارت‌های اطلاعاتی گرافیکی
-- 🌐 پشتیبانی کامل از فارسی
-- 📱 Inline Mode برای اشتراک‌گذاری
-
-### 🔐 مدیریت و امنیت
-
-- 🔒 **قفل کانال** (عضویت اجباری)
-- ⭐️ **سیستم پریمیوم** با انقضا
-- 🛠 **پنل ادمین** کامل
-- 📢 **پیام همگانی** با شمارش دقیق
-- 🔍 **جستجوی کاربر** بین یوزرنیم/آیدی
-- ⛔️ **بن / آنبن** کاربران
-- 💾 **بکاپ JSON** لحظه‌ای
-- 🏆 **لیدربورد** + آمار ۷ روز اخیر
-
+<td width="25%" align="center">
+<br>
+<img src="https://img.shields.io/badge/🎼-M4A-4ecdc4?style=for-the-badge&labelColor=0d1117" />
+<br><br>
+<b>کدک AAC</b>
+<br>
+<sub>128 · 192 · 256</sub>
+<br><br>
+</td>
+<td width="25%" align="center">
+<br>
+<img src="https://img.shields.io/badge/🎤-ویس-ffe66d?style=for-the-badge&labelColor=0d1117" />
+<br><br>
+<b>Opus</b>
+<br>
+<sub>48k · mono</sub>
+<br><br>
+</td>
+<td width="25%" align="center">
+<br>
+<img src="https://img.shields.io/badge/🎼-FLAC-95e1d3?style=for-the-badge&labelColor=0d1117" />
+<br><br>
+<b>بدون افت</b>
+<br>
+<sub>Lossless 💎</sub>
+<br><br>
 </td>
 </tr>
 </table>
 
 <br>
 
+<div align="center">
+
+### 🎚️ &nbsp; پردازش پیشرفته صدا &nbsp; 🎚️
+
+<br>
+
+| | ویژگی | توضیح |
+|:---:|:---|:---|
+| 🔊 | **نرمال‌سازی صدا** | استاندارد استودیویی EBU R128 |
+| ✂️ | **حذف سکوت** | پاک‌سازی خودکار ابتدا و انتهای فایل |
+| 🖼 | **استخراج کاور** | چند سطح fallback هوشمند |
+| 📝 | **متادیتای خودکار** | Title · Artist · Album |
+| ⏱ | **تشخیص مدت** | نمایش دقیق زمان موزیک |
+
+</div>
+
+<br>
+
 ---
 
-## 🖼 پیش‌نمایش
+<div align="center">
+
+## ⚡️ &nbsp; زیرساخت قدرتمند &nbsp; ⚡️
+
+</div>
+
+<br>
 
 <div align="center">
 
 <table>
 <tr>
-<th>🎬 منوی اصلی</th>
-<th>🎚 انتخاب کیفیت</th>
-<th>✅ نتیجه نهایی</th>
+<td align="center" width="200">
+<br>
+<h3>🚀</h3>
+<b>Semaphore</b>
+<br>
+<sub>مدیریت تبدیل همزمان</sub>
+<br><br>
+</td>
+<td align="center" width="200">
+<br>
+<h3>⏱</h3>
+<b>Rate Limiting</b>
+<br>
+<sub>کنترل نرخ درخواست</sub>
+<br><br>
+</td>
+<td align="center" width="200">
+<br>
+<h3>🛡</h3>
+<b>Graceful Shutdown</b>
+<br>
+<sub>خروج تمیز و امن</sub>
+<br><br>
+</td>
 </tr>
 <tr>
-<td align="center">
-<code>/start</code><br>
-منوی گرافیکی
+<td align="center" width="200">
+<br>
+<h3>🔄</h3>
+<b>Auto Restart</b>
+<br>
+<sub>تا ۱۰ بار تلاش خودکار</sub>
+<br><br>
 </td>
-<td align="center">
-<code>cv|mp3_192</code><br>
-Preset های متنوع
+<td align="center" width="200">
+<br>
+<h3>📦</h3>
+<b>Atomic Storage</b>
+<br>
+<sub>ذخیره‌سازی بدون تداخل</sub>
+<br><br>
 </td>
-<td align="center">
-<code>send_audio</code><br>
-MP3 + کاور + متادیتا
+<td align="center" width="200">
+<br>
+<h3>🧪</h3>
+<b>Smoke Test</b>
+<br>
+<sub>چک سلامت قبل از اجرا</sub>
+<br><br>
 </td>
 </tr>
 </table>
@@ -137,58 +166,225 @@ MP3 + کاور + متادیتا
 
 ---
 
-## 🚀 راه‌اندازی
+<div align="center">
 
-### ۱️⃣ ساخت ربات
-از [**@BotFather**](https://t.me/BotFather) یه ربات بساز و توکنش رو بردار.
+## 🎨 &nbsp; رابط کاربری &nbsp; 🎨
 
-### ۲️⃣ تنظیم Secretها
-توی **Settings → Secrets and variables → Actions**:
-
-| Secret | توضیح | اجباری |
-|:---|:---|:---:|
-| `BOT_TOKEN` | توکن ربات از BotFather | ✅ |
-| `GH_TOKEN` | [Personal Access Token](https://github.com/settings/tokens) با دسترسی `repo` | ✅ |
-| `ADMINS` | آیدی عددی ادمین‌ها (با کاما جدا کن) | ✅ |
-| `GATE_CHANNEL` | آیدی کانال قفل (اختیاری) | ❌ |
-
-### ۳️⃣ فعال‌سازی
-برو تب **Actions** → **🎵 HiVo-MP3 Bot** → **Run workflow**
-
-✅ تمام! ربات آنلاین میشه.
+</div>
 
 <br>
 
-<details>
-<summary><b>⚙️ تنظیمات پیشرفته (اختیاری)</b></summary>
+<table align="center" width="100%">
+<tr>
+<td width="50%" valign="top">
 
 <br>
 
-| متغیر | پیش‌فرض | توضیح |
-|:---|:---:|:---|
-| `FREE_MAX_MB` | `10` | سقف حجم پلن رایگان |
-| `PREMIUM_MAX_MB` | `19` | سقف حجم پلن پریمیوم |
-| `MAX_CONCURRENT` | `3` | تعداد تبدیل همزمان |
-| `GH_PATH` | `data/db.json` | مسیر دیتابیس |
-| `GH_BRANCH` | `main` | برنچ ذخیره‌سازی |
+### 💎 &nbsp; طراحی مینیمال
 
-</details>
+> 🎯 دکمه‌های شیشه‌ای تمیز
+> 
+> 📊 نوار پیشرفت زنده
+> 
+> 🗂 کارت‌های اطلاعاتی گرافیکی
+> 
+> 🌐 پشتیبانی کامل از فارسی
+> 
+> 📱 Inline Mode اشتراک‌گذاری
+
+<br>
+
+</td>
+<td width="50%" valign="top">
+
+<br>
+
+### 🎬 &nbsp; تجربه تبدیل
+
+> ⚡️ دکمه ارسال ویدیو
+> 
+> 🎚 انتخاب کیفیت آسان
+> 
+> 📈 نمایش پیشرفت (۳۰٪ → ۸۰٪ → ۱۰۰٪)
+> 
+> 🎁 تحویل موزیک با کاور
+> 
+> 🔄 دکمه تبدیل مجدد
+
+<br>
+
+</td>
+</tr>
+</table>
 
 <br>
 
 ---
 
-## 📁 ساختار پروژه
+<div align="center">
+
+## 🔐 &nbsp; امنیت و مدیریت &nbsp; 🔐
+
+</div>
+
+<br>
+
+<table align="center" width="100%">
+<tr>
+<td width="33%" align="center">
+<br>
+<img src="https://img.shields.io/badge/🔒-Gate-ff4757?style=for-the-badge&labelColor=0d1117"/>
+<br><br>
+<b>قفل کانال</b>
+<br>
+<sub>عضویت اجباری</sub>
+<br><br>
+</td>
+<td width="33%" align="center">
+<br>
+<img src="https://img.shields.io/badge/⭐️-Premium-ffd93d?style=for-the-badge&labelColor=0d1117"/>
+<br><br>
+<b>پریمیوم</b>
+<br>
+<sub>با انقضا و مدیریت</sub>
+<br><br>
+</td>
+<td width="33%" align="center">
+<br>
+<img src="https://img.shields.io/badge/⛔️-Ban-ee5a6f?style=for-the-badge&labelColor=0d1117"/>
+<br><br>
+<b>بن / آنبن</b>
+<br>
+<sub>کنترل کامل کاربران</sub>
+<br><br>
+</td>
+</tr>
+</table>
+
+<br>
+
+<div align="center">
+
+### 🛠 &nbsp; پنل ادمین &nbsp; 🛠
+
+<br>
+
+| | قابلیت | توضیح |
+|:---:|:---|:---|
+| 📊 | **آمار کلی** | کاربران · پریمیوم · بن‌شده |
+| 📈 | **آمار ۷ روز** | نمودار روزانه تبدیل‌ها |
+| 🏆 | **لیدربورد** | تاپ ۱۰ کاربر فعال |
+| 📢 | **پیام همگانی** | ارسال به همه کاربران |
+| 🔍 | **جستجوی کاربر** | بین یوزرنیم / آیدی |
+| 💾 | **بکاپ JSON** | دریافت لحظه‌ای دیتابیس |
+| ⚙️ | **تنظیمات زنده** | مشاهده پیکربندی |
+
+</div>
+
+<br>
+
+---
+
+<div align="center">
+
+## 📊 &nbsp; آمار و آنالیتیکس &nbsp; 📊
+
+</div>
+
+<br>
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="25%">
+<br>
+<h2>👥</h2>
+<b>کاربران</b>
+<br>
+<sub>ثبت و ردیابی خودکار</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<h2>📈</h2>
+<b>روزانه</b>
+<br>
+<sub>تاریخچه ۷ روزه</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<h2>🏆</h2>
+<b>لیدربورد</b>
+<br>
+<sub>رتبه‌بندی کاربران</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<h2>💾</h2>
+<b>بکاپ</b>
+<br>
+<sub>خروجی JSON</sub>
+<br><br>
+</td>
+</tr>
+</table>
+
+</div>
+
+<br>
+
+---
+
+<div align="center">
+
+## 🎯 &nbsp; محدودیت‌های پلن &nbsp; 🎯
+
+<br>
+
+| | 🆓 رایگان | ⭐️ پریمیوم |
+|:---|:---:|:---:|
+| 📦 حجم فایل | **تا ۱۰ MB** | **تا ۱۹ MB** |
+| 🎚 کیفیت MP3 | 128 · 192 | 128 · 192 · **320 · V0** |
+| 🎼 FLAC | ❌ | ✅ |
+| ⏱ نرخ تبدیل | ۵ / ۵ دقیقه | **۳۰ / ۵ دقیقه** |
+| ⚡️ اولویت پردازش | عادی | **بالا** |
+
+</div>
+
+<br>
+
+---
+
+<div align="center">
+
+## 🏗 &nbsp; معماری &nbsp; 🏗
+
+<br>
 
 ```text
-HiVo-Mp3/
-├── 📄 main.py                 # 🎮 لایه ربات (هندلرها، UI، پنل ادمین)
-├── 💾 store.py                # 🗄 لایه ذخیره‌سازی (GitHub JSON)
-├── 🎬 converter.py            # 🔄 لایه تبدیل (FFmpeg)
-├── 📦 requirements.txt        # وابستگی‌ها
-├── 📖 README.md               # این فایل
-├── 📂 data/
-│   └── 🗃 db.json             # دیتابیس (auto-managed)
-└── 📂 .github/
-    └── 📂 workflows/
-        └── ⚙️ bot.yml         # اجرای خودکار
+    ┌───────────────────────┐
+    │                       │
+    │      🎮  main.py      │
+    │    Telegram Layer     │
+    │   (Handlers · UI)     │
+    │                       │
+    └───────────┬───────────┘
+                │
+    ┌───────────▼───────────┐
+    │                       │
+    │     💾  store.py      │
+    │   Persistence Layer   │
+    │   (Users · Stats)     │
+    │                       │
+    └───────────┬───────────┘
+                │
+    ┌───────────▼───────────┐
+    │                       │
+    │   🎬  converter.py    │
+    │   Processing Layer    │
+    │       (FFmpeg)        │
+    │                       │
+    └───────────────────────┘
