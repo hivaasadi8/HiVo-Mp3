@@ -3,8 +3,9 @@
     "8343701928": {
       "username": "",
       "first_name": ".",
-      "last_seen": 1789389401,
-      "conversions": 4
+      "last_seen": 1789393190,
+      "conversions": 4,
+      "joined_at": 1789393190
     },
     "7862983298": {
       "premium_until": 1791981451.1497574,
@@ -15,6 +16,16 @@
     }
   },
   "stats": {
-    "total_conversions": 5
+    "total_conversions": 5,
+    "new_users_today": 1
+  },
+  "meta": {
+    "version": 2,
+    "created_at": 1789393190
+  },
+  "daily": {
+    "2026-09-14": {
+      "new_users_today": 1
+    }
   }
 }
